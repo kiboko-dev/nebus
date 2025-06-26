@@ -14,7 +14,7 @@ services:
        - ./app:/var/www
        - ./app/var/log/nginx:/var/log/nginx:delegated
      ports:
-       - "127.0.0.1:2111:80"
+       - "127.0.0.1:2105:80"
      networks:
        - nebus-network
 
@@ -41,7 +41,7 @@ services:
      volumes:
        - redis_data:/data:rw
      ports:
-       - "127.0.0.1:6411:6379"
+       - "127.0.0.1:6409:6379"
      networks:
        - nebus-network
 
@@ -51,7 +51,7 @@ services:
      restart: unless-stopped
      tty: true
      ports:
-       - "127.0.0.1:53311:3306"
+       - "127.0.0.1:53309:3306"
      environment:
        MYSQL_DATABASE: ${DATABASE_NAME:-nebus}
        MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:-R3@lB@zzYnX2022!}
