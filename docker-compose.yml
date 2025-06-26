@@ -1,0 +1,72 @@
+services:
+   nginx:
+     build:
+       context: ./docker/nginx
+       args:
+         PGID: "${PGID:-1006}"
+         PUID: "${PUID:-1006}"
+     depends_on:
+       - php
+     container_name: nebus-nginx
+     restart: unless-stopped
+     working_dir: /var/www
+     volumes:
+       - ./app:/var/www
+       - ./app/var/log/nginx:/var/log/nginx:delegated
+     ports:
+       - "127.0.0.1:2111:80"
+     networks:
+       - nebus-network
+
+   php:
+     build:
+       context: ./docker/php
+       args:
+         PGID: "${PGID:-1006}"
+         PUID: "${PUID:-1006}"
+         DEVELOP: "true"
+     container_name: nebus-php
+     restart: unless-stopped
+     volumes:
+       - ./app:/var/www:rw
+       - composer:/home/www-data/.composer:rw
+     networks:
+       - nebus-network
+
+   redis:
+     container_name: nebus-redis
+     build:
+       context: ./docker/redis
+     restart: unless-stopped
+     volumes:
+       - redis_data:/data:rw
+     ports:
+       - "127.0.0.1:6411:6379"
+     networks:
+       - nebus-network
+
+   database:
+     image: mysql:latest
+     container_name: nebus-db
+     restart: unless-stopped
+     tty: true
+     ports:
+       - "127.0.0.1:53311:3306"
+     environment:
+       MYSQL_DATABASE: ${DATABASE_NAME:-nebus}
+       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:-R3@lB@zzYnX2022!}
+       MYSQL_USER: ${DATABASE_USER:-nebus}
+       MYSQL_PASSWORD: ${DATABASE_PASSWORD:-R3@lB@zzYnX2022!}
+       SERVICE_TAGS: dev
+       SERVICE_NAME: mysql
+     networks:
+       - nebus-network
+
+networks:
+  nebus-network:
+       driver: bridge
+
+volumes:
+  composer: {}
+  postgres-data: {}
+  redis_data: {}
