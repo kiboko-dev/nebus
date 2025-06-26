@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('activity_types', function (Blueprint $table) {
-            $table->id();
+            $table->integerIncrements('id');
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('parent_id')->nullable();

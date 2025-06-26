@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('buildings', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid('id')->primary();
             $table->string('address')->index();
             $table->float('latitude');
             $table->float('longitude');

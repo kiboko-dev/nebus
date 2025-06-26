@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('organizations', function (Blueprint $table) {
             $table->foreign('activity_type_id')->references('id')->on('activity_types');
-            $table->foreign('building_id')->references('id')->on('buildings');
+            $table->foreignUuid('building_id')->references('id')->on('buildings');
         });
     }
 
