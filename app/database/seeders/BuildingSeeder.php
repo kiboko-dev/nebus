@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\ActivityType;
 use App\Models\Building;
 use App\Models\Organization;
 use Illuminate\Database\Seeder;
