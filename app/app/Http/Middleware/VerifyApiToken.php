@@ -10,12 +10,10 @@ class VerifyApiToken
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $token = $request->bearerToken() ?? $request->input('token');
-
-        if ($token !== config('app.api_static_token')) {
-            return response()->json([
-                'message' => 'Invalid API Token',
-            ], 401);
+        $apiKey = $request->header('static-api-key');
+        $validKey = config('app.static_api_key');
+        if ($apiKey !== $validKey) {
+            return response()->json(['error' => 'Invalid API key'], 401);
         }
 
         return $next($request);
