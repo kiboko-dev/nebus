@@ -75,7 +75,7 @@ return [
     ],
 
     "links" => [
-        "postman" => "View Postman collection",
+        "postman" => "Показать коллекцию для Postman",
         "openapi" => "View OpenAPI spec",
     ],
 ];
