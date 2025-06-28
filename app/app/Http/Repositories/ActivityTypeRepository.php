@@ -3,12 +3,25 @@
 namespace App\Http\Repositories;
 
 use App\Models\ActivityType;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class ActivityTypeRepository
 {
     public function index(): Collection
     {
-        return ActivityType::all();
+        $activities = ActivityType::with('children')->whereNull('parent_id')->get();
+
+        return $this->buildTree($activities);
+    }
+
+    protected function buildTree($activities)
+    {
+        return $activities->map(function ($activity) {
+            return [
+                'id' => $activity->id,
+                'name' => $activity->name,
+                'children' => $this->buildTree($activity->children)
+            ];
+        });
     }
 }
