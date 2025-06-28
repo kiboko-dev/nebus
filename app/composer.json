@@ -9,6 +9,7 @@
         "php": "^8.2",
         "knuckleswtf/scribe": "^5.2",
         "laravel/framework": "^11.31",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "spatie/laravel-data": "^4.17",
         "spatie/laravel-sluggable": "^3.7"
