@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\ActivityTypeRepository;
-use App\Models\ActivityType;
 use Illuminate\Http\JsonResponse;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\Subgroup;
 
-#[Group(name: 'Виды деятельности')]
+#[Group("Служебное")]
 class ActivityTypeController extends Controller
 {
-    #[Endpoint(title: 'Получить список')]
+    #[Endpoint(title: 'Список видов деятельности')]
     public function index(): JsonResponse
     {
         return response()->json(app(ActivityTypeRepository::class)->index());
