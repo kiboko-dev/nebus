@@ -2,20 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\BuildingService;
+use App\Http\Repositories\OrganizationRepository;
+use App\Http\Services\OrganizationService;
 use Illuminate\Http\JsonResponse;
+use Knuckles\Scribe\Attributes\Endpoint;
+use Knuckles\Scribe\Attributes\Group;
+
 
 class OrganizationController extends Controller
 {
-    public function indexByBuilding(string $buildingId): JsonResponse
+    public function __construct(
+        protected OrganizationService $service,
+        protected OrganizationRepository $repository,
+    )
     {
-        return response()->json(['data' => app(BuildingService::class)->getOrganizationByBuildingId($buildingId)]);
     }
 
-    public function indexByActivityType(string $activityTypeId): JsonResponse
+    #[Group(name: 'Организации')]
+    #[Endpoint(title: 'Список организаций в здании')]
+    public function indexByBuilding(string $buildingId): JsonResponse
     {
+        return response()->json(
+            $this->service->byBuildingId($buildingId));
+    }
 
-        return response()->json(['data' => '']);
+    #[Group(name: 'Организации')]
+    #[Endpoint(title: 'Список организаций по виду деятельности')]
+    public function indexByActivityType(int $activityTypeId): JsonResponse
+    {
+        return response()->json(
+            $this->service->byActivityTypeId($activityTypeId)
+        );
+    }
+
+    #[Group(name: 'Служебное')]
+    #[Endpoint(title: 'Список организаций')]
+    public function index(): JsonResponse
+    {
+        return response()->json(
+            $this->repository->index()
+        );
     }
 
     public function indexByRadius(float $latitude, float $longitude, float $radius): JsonResponse
@@ -24,10 +50,14 @@ class OrganizationController extends Controller
         return response()->json(['data' => '']);
     }
 
+    #[Group(name: 'Организации')]
+    #[Endpoint(title: 'Данные организации')]
     public function getById(string $id): JsonResponse
     {
 
-        return response()->json(['data' => '']);
+        return response()->json(
+            $this->repository->show($id)
+        );
     }
 
     public function searchByActivityType(string $activityType): JsonResponse
@@ -36,9 +66,12 @@ class OrganizationController extends Controller
         return response()->json(['data' => '']);
     }
 
-    public function searchByName(string $name): JsonResponse
+    #[Group(name: 'Организации')]
+    #[Endpoint(title: 'Поиск по названию')]
+    public function searchByName(string $query): JsonResponse
     {
-
-        return response()->json(['data' => '']);
+        return response()->json(
+            $this->repository->search($query)
+        );
     }
 }

@@ -10,7 +10,16 @@ Route::middleware([VerifyApiToken::class])->group(function () {
     Route::get('/buildings', [BuildingController::class, 'index']);
     Route::get('/activity-types', [ActivityTypeController::class, 'index']);
 
-    Route::prefix('organizations')->group(function () {
-        Route::get('/by-building/{building}', [OrganizationController::class, 'indexByBuilding']);
+    Route::prefix('organization')->group(function () {
+        Route::get('/search/{query}', [OrganizationController::class, 'searchByName']);
+        Route::get('/{id}', [OrganizationController::class, 'getById']);
     });
+
+    Route::prefix('organizations')->group(function () {
+        Route::get('/', [OrganizationController::class, 'index']);
+        Route::get('/by-building/{buildingId}', [OrganizationController::class, 'indexByBuilding']);
+        Route::get('/by-activity-type/{activityTypeId}', [OrganizationController::class, 'indexByActivityType']);
+    });
+
+
 });

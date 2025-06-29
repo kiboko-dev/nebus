@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Data\ActivityTypeData;
 use App\Models\ActivityType;
 use Illuminate\Support\Collection;
 
@@ -23,5 +24,13 @@ class ActivityTypeRepository
                 'children' => $this->buildTree($activity->children)
             ];
         });
+    }
+
+    public function getWithOrganizations(int $id): ActivityTypeData
+    {
+        return ActivityTypeData::fromModel(
+            activityType: ActivityType::query()->with('organizations')->findOrFail($id),
+            with: ['organizations', 'parent']
+        );
     }
 }

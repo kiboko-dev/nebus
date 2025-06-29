@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property ?array $organizations
+ * @property self $parent
+ */
 class ActivityType extends Model
 {
     use SoftDeletes, HasFactory, HasSlug;
