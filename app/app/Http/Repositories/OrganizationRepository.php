@@ -33,4 +33,17 @@ class OrganizationRepository
 
         return $result ?? null;
     }
+
+    public function getByActivityTypeId(array $activityTypeIds): array
+    {
+        $result = [];
+        $organizations = Organization::query()->whereIn('activity_type_id', $activityTypeIds)->get();
+        if (count($organizations) > 0) {
+            foreach ($organizations as $organization) {
+                $result[] = OrganizationData::fromModel($organization, ['building',  'activityType']);
+            }
+        }
+
+        return $result;
+    }
 }

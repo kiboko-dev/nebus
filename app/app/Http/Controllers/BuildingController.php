@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\BuildingRepository;
+use App\Http\Requests\GeoRequest;
 use Illuminate\Http\JsonResponse;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
@@ -11,6 +12,10 @@ use Knuckles\Scribe\Attributes\Response;
 #[Group("Служебное")]
 class BuildingController extends Controller
 {
+    public function __construct(protected BuildingRepository $repository)
+    {
+    }
+
     #[Endpoint(title: 'Список зданий')]
     #[Response(content: '[
     {
@@ -23,7 +28,14 @@ class BuildingController extends Controller
     public function index(): JsonResponse
     {
         return response()->json(
-            app(BuildingRepository::class)->index()
+            $this->repository->index()
+        );
+    }
+
+    public function geoSearch(GeoRequest $request): JsonResponse
+    {
+        return response()->json(
+            $this->repository->geoSearch($request->validated())
         );
     }
 }

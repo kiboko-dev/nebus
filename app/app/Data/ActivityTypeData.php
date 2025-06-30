@@ -24,7 +24,7 @@ class ActivityTypeData extends Data
                 ? ActivityTypeData::factory()->withOptionalValues()->from($activityType->parent)
                 : null,
             organizations: in_array('organizations', $with)
-                ? OrganizationData::collect($activityType->organizations)->toArray()
+                ? OrganizationData::collect($activityType->organizations)->include('building')
                 : null,
         );
     }

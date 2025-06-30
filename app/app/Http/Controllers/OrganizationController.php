@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\OrganizationRepository;
+use App\Http\Requests\GeoRequest;
+use App\Http\Requests\SearchByActivityTypeRequest;
 use App\Http\Services\OrganizationService;
 use Illuminate\Http\JsonResponse;
 use Knuckles\Scribe\Attributes\Endpoint;
@@ -44,12 +46,6 @@ class OrganizationController extends Controller
         );
     }
 
-    public function indexByRadius(float $latitude, float $longitude, float $radius): JsonResponse
-    {
-
-        return response()->json(['data' => '']);
-    }
-
     #[Group(name: 'Организации')]
     #[Endpoint(title: 'Данные организации')]
     public function getById(string $id): JsonResponse
@@ -60,10 +56,11 @@ class OrganizationController extends Controller
         );
     }
 
-    public function searchByActivityType(string $activityType): JsonResponse
+    public function searchByActivityType(SearchByActivityTypeRequest $request): JsonResponse
     {
-
-        return response()->json(['data' => '']);
+        return response()->json(
+            $this->service->searchByActivityType($request->validated())
+        );
     }
 
     #[Group(name: 'Организации')]

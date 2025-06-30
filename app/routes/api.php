@@ -7,11 +7,14 @@ use App\Http\Middleware\VerifyApiToken;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([VerifyApiToken::class])->group(function () {
-    Route::get('/buildings', [BuildingController::class, 'index']);
+    Route::prefix('buildings')->group(function () {
+        Route::get('/', [BuildingController::class, 'index']);
+        Route::post('/geoSearch', [BuildingController::class, 'geoSearch']);
+    });
+
     Route::get('/activity-types', [ActivityTypeController::class, 'index']);
 
     Route::prefix('organization')->group(function () {
-        Route::get('/search/{query}', [OrganizationController::class, 'searchByName']);
         Route::get('/{id}', [OrganizationController::class, 'getById']);
     });
 
@@ -19,7 +22,7 @@ Route::middleware([VerifyApiToken::class])->group(function () {
         Route::get('/', [OrganizationController::class, 'index']);
         Route::get('/by-building/{buildingId}', [OrganizationController::class, 'indexByBuilding']);
         Route::get('/by-activity-type/{activityTypeId}', [OrganizationController::class, 'indexByActivityType']);
+        Route::get('/search/by-name/{query}', [OrganizationController::class, 'searchByName']);
+        Route::post('/search/by-activity-type', [OrganizationController::class, 'searchByActivityType']);
     });
-
-
 });
