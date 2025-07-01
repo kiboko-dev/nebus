@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\OrganizationRepository;
-use App\Http\Requests\GeoRequest;
 use App\Http\Requests\SearchByActivityTypeRequest;
 use App\Http\Services\OrganizationService;
 use Illuminate\Http\JsonResponse;
 use Knuckles\Scribe\Attributes\Endpoint;
 use Knuckles\Scribe\Attributes\Group;
 
-
+#[Group(name: 'Организации')]
 class OrganizationController extends Controller
 {
     public function __construct(
@@ -20,7 +19,7 @@ class OrganizationController extends Controller
     {
     }
 
-    #[Group(name: 'Организации')]
+
     #[Endpoint(title: 'Список организаций в здании')]
     public function indexByBuilding(string $buildingId): JsonResponse
     {
@@ -28,7 +27,6 @@ class OrganizationController extends Controller
             $this->service->byBuildingId($buildingId));
     }
 
-    #[Group(name: 'Организации')]
     #[Endpoint(title: 'Список организаций по виду деятельности')]
     public function indexByActivityType(int $activityTypeId): JsonResponse
     {
@@ -37,8 +35,7 @@ class OrganizationController extends Controller
         );
     }
 
-    #[Group(name: 'Служебное')]
-    #[Endpoint(title: 'Список организаций')]
+    #[Endpoint(title: 'Список всех организаций')]
     public function index(): JsonResponse
     {
         return response()->json(
@@ -46,7 +43,6 @@ class OrganizationController extends Controller
         );
     }
 
-    #[Group(name: 'Организации')]
     #[Endpoint(title: 'Данные организации')]
     public function getById(string $id): JsonResponse
     {
@@ -56,6 +52,7 @@ class OrganizationController extends Controller
         );
     }
 
+    #[Endpoint(title: 'Поиск по виду деятельности')]
     public function searchByActivityType(SearchByActivityTypeRequest $request): JsonResponse
     {
         return response()->json(
@@ -63,7 +60,6 @@ class OrganizationController extends Controller
         );
     }
 
-    #[Group(name: 'Организации')]
     #[Endpoint(title: 'Поиск по названию')]
     public function searchByName(string $query): JsonResponse
     {
